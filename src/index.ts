@@ -70,7 +70,7 @@ createConnection({
       const result = await secretRepo.save(secretUpdate);
       res.json(result);
     });
-    //WHAT
+    
 
     //Delete a secret
     app.delete("/", async (req: Request, res: Response) => {
