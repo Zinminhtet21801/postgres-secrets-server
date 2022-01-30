@@ -57,7 +57,8 @@ createConnection({
       const secret = new Secrets();
       secret.title = title;
       secret.body = body;
-      const saveSecret = await connection.manager.save(secret);
+      const saveSecret = await secretRepo.save(secret);
+      connection.createQueryBuilder().delete().from(Secrets).execute();
       res.json(saveSecret);
     });
 
@@ -70,7 +71,6 @@ createConnection({
       const result = await secretRepo.save(secretUpdate);
       res.json(result);
     });
-    
 
     //Delete a secret
     app.delete("/", async (req: Request, res: Response) => {
