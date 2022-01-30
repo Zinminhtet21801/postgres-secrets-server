@@ -58,7 +58,6 @@ createConnection({
       secret.title = title;
       secret.body = body;
       const saveSecret = await secretRepo.save(secret);
-      connection.createQueryBuilder().delete().from(Secrets).execute();
       res.json(saveSecret);
     });
 
