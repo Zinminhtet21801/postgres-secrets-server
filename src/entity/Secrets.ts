@@ -2,7 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 
 @Entity()
 export class Secrets {
-  @PrimaryGeneratedColumn("rowid")
+  @PrimaryGeneratedColumn()
   id: number;
 
   @Column()
