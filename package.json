@@ -15,6 +15,7 @@
       "@types/node": "^17.0.12",
       "cors": "^2.8.5",
       "dotenv": "^8.6.0",
+      "express": "^4.17.2",
       "pg": "^8.4.0",
       "reflect-metadata": "^0.1.10",
       "typeorm": "0.2.41"
