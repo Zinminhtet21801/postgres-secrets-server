@@ -2,8 +2,8 @@ import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 
 @Entity()
 export class Secrets {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn("increment")
+  id: string;
 
   @Column()
   title: string;

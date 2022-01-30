@@ -25,57 +25,60 @@ const options = {
   cert: fs.readFileSync("cert.pem"),
 };
 
-https
-  .createServer(options, function (req: Request, res: Response) {
-    res.writeHead(200);
-    res.end("hello world\n");
-  })
-  .listen(5000);
+const server = https.createServer(options, app);
+server.listen(PORT, () => {
+  console.log("STARTED");
+});
 
-const getOptions = async () => {
-  let connectionOptions: ConnectionOptions;
-  connectionOptions = {
-    type: "postgres",
-    synchronize: false,
-    logging: false,
-    ssl: {
-      rejectUnauthorized: false,
-    },
-    entities: ["entity/**/*.ts"],
-  };
-  if (process.env.DATABASE_URL) {
-    Object.assign(connectionOptions, { url: process.env.DATABASE_URL });
-  } else {
-    connectionOptions = await getConnectionOptions();
-  }
-
-  return connectionOptions;
-};
-
-const connect2Database = async (): Promise<any> => {
-  const typeormconfig = await getOptions();
-  await createConnection(typeormconfig);
-};
-
-connect2Database()
+createConnection({
+  type: "postgres",
+  url: process.env.DATABASE_URL,
+  logging: false,
+  synchronize: true,
+  ssl: {
+    rejectUnauthorized: false,
+  },
+  entities: ["src/entity/**/*.ts"],
+})
   .then(async (connection) => {
-    app.get("/", async (req: Request, res: Response) => {
+    const secretRepo = connection.getRepository(Secrets);
+    //Get All Secrets
+    app.get("/getAll", async (req: Request, res: Response) => {
       const secret = new Secrets();
-      const result = await connection.manager.find(Secrets);
+      const result = await secretRepo.find();
       res.json(result);
     });
 
+    //Post a secret
     app.post("/", async (req: Request, res: Response) => {
-      console.log(req.body);
-
       const { title, body } = req.body;
 
-      console.log("Inserting a new user into the database...");
+      console.log("Inserting a new secret into the database...");
       const secret = new Secrets();
       secret.title = title;
       secret.body = body;
       const saveSecret = await connection.manager.save(secret);
       res.json(saveSecret);
+    });
+
+    // Update a secret
+    app.put("/", async (req: Request, res: Response) => {
+      const { id, title, body } = req.body;
+      const secretUpdate = await secretRepo.findOne({ id: id });
+      secretUpdate.title = title;
+      secretUpdate.body = body;
+      const result = await secretRepo.save(secretUpdate);
+      res.json(result);
+    });
+
+    //Delete a secret
+    app.delete("/", async (req: Request, res: Response) => {
+      const { id } = req.body;
+      const secretDelete = await secretRepo.findOne({ id: id });
+      console.log(secretDelete);
+
+      const result = await secretRepo.remove(secretDelete);
+      res.json(result);
     });
   })
   .catch((error) => console.log(error));
