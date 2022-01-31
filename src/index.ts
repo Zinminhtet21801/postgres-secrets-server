@@ -58,7 +58,7 @@ createConnection({
       secret.id = id
       secret.title = title;
       secret.body = body;
-      secret.createdAt = Date.now()
+      secret.createdAt = new Date()
       await secretRepo.save(secret).then((data) => res.json(data));
     });
 
