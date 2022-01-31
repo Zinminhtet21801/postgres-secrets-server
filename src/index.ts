@@ -43,10 +43,15 @@ createConnection({
   .then(async (connection) => {
     const secretRepo = connection.getRepository(Secrets);
     //Get All Secrets
-    app.get("/getAll", async (req: Request, res: Response) => {
-      const secret = new Secrets();
-      const result = await secretRepo.find();
-      res.json(result);
+    app.get("/getAll/:page", async (req: Request, res: Response) => {
+      const { page } = req.params;
+      const secrets = await secretRepo
+        .createQueryBuilder("secrets")
+        .skip(12 * parseInt(page))
+        .take(12)
+        .orderBy("secrets.createdAt", "DESC")
+        .getManyAndCount();
+      res.json(secrets);
     });
 
     //Post a secret
@@ -55,10 +60,10 @@ createConnection({
 
       console.log("Inserting a new secret into the database...");
       const secret = new Secrets();
-      secret.id = id
+      secret.id = id;
       secret.title = title;
       secret.body = body;
-      secret.createdAt = createdAt
+      secret.createdAt = createdAt;
       await secretRepo.save(secret).then((data) => res.json(data));
     });
 
