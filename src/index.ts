@@ -51,10 +51,11 @@ createConnection({
 
     //Post a secret
     app.post("/", async (req: Request, res: Response) => {
-      const { title, body } = req.body;
+      const { id, title, body } = req.body;
 
       console.log("Inserting a new secret into the database...");
       const secret = new Secrets();
+      secret.id = id
       secret.title = title;
       secret.body = body;
       await secretRepo.save(secret).then((data) => res.json(data));
