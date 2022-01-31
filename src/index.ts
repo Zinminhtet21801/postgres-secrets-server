@@ -57,8 +57,7 @@ createConnection({
       const secret = new Secrets();
       secret.title = title;
       secret.body = body;
-      const saveSecret = await secretRepo.save(secret);
-      res.json(saveSecret);
+      await secretRepo.save(secret).then((data) => res.json(data));
     });
 
     // Update a secret
