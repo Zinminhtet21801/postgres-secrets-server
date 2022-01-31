@@ -14,5 +14,5 @@ export class Secrets {
   @Column({
     type: "date",
   })
-  createdAt;
+  createdAt : Date;
 }
