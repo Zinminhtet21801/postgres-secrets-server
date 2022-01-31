@@ -11,6 +11,8 @@ export class Secrets {
   @Column()
   body: string;
 
-  @Column()
-  createdAt: number;
+  @Column({
+    type: "date",
+  })
+  createdAt : number;
 }
