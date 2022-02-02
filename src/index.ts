@@ -42,6 +42,9 @@ createConnection({
 })
   .then(async (connection) => {
 
+    console.log("Connected to DB");
+    
+
     app.get("/", (req: Request, res: Response) => {
       res.json({
         message : "SHIT"
