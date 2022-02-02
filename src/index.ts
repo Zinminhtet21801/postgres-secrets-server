@@ -41,6 +41,13 @@ createConnection({
   entities: ["src/entity/**/*.ts"],
 })
   .then(async (connection) => {
+
+    app.get("/", (req: Request, res: Response) => {
+      res.json({
+        message : "SHIT"
+      })
+    })
+
     const secretRepo = connection.getRepository(Secrets);
     //Get All Secrets
     app.get("/getAll/:page", async (req: Request, res: Response) => {
