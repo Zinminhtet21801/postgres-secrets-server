@@ -20,7 +20,7 @@
       "typeorm": "0.2.41"
    },
    "devDependencies": {
-      "ts-node": "3.3.0",
-      "typescript": "3.3.3333"
+      "ts-node": "^10.4.0",
+      "typescript": "^3.3.3333"
    }
 }

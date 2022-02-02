@@ -1,5 +1,5 @@
 require("dotenv").config();
-import { Request, Response } from "express";
+import { Request, Response, Express } from "express";
 import "reflect-metadata";
 import {
   createConnection,
@@ -8,7 +8,7 @@ import {
 } from "typeorm";
 import { Secrets } from "./entity/Secrets";
 
-const express = require("express");
+import express = require("express");
 const cors = require("cors");
 const PORT = process.env.PORT || 5000;
 const app = express();
